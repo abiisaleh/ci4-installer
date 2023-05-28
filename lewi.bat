@@ -1,7 +1,10 @@
+cd c://xampp/htdocs
 git clone http://github.com/abiisaleh/lewi.git
 cd lewi
-cp env .env
-composer udpate
+copy env .env
+copy php.ini c://xampp/php/php.ini
+start c://xampp/mysql_start.bat
+composer update
 php spark db:create lewi
 php spark migrate
 php spark db:seed Demo
