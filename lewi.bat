@@ -1,11 +1,14 @@
+@echo off
+set /p repo="Masukkan Kode Repository: "
+echo Nama Anda adalah %repo%
 cd c://xampp/htdocs
-git clone http://github.com/abiisaleh/lewi.git
-cd lewi
+git clone http://github.com/abiisaleh/%repo%.git
+cd %repo%
 copy env .env
 copy php.ini c://xampp/php/php.ini
 start c://xampp/mysql_start.bat
 composer update
-php spark db:create lewi
+php spark db:create %repo%
 php spark migrate
 php spark db:seed Demo
 php spark auth:create_user admin admin@demo.com
