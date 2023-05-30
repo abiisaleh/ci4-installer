@@ -13,29 +13,31 @@ for /f "delims=: tokens=*" %%A in ('findstr /b ::: "%~f0"') do @echo(%%A
 
 set /p repo="Masukkan Kode Repository: "
 
-IF EXIST "c://xampp/htdocs/%repo%" (
-    :install
-    set /p choice="Mau apa cok? ( run / update): "
-
-    if "%choice%"=="run" (
-        cd c://xampp/htdocs
-        cd %repo%
-        start c://xampp/mysql_start.bat & start php spark serve
-        start msedge http://localhost:8080
-    ) else if "%choice%"=="update" (
-        cd c://xampp/htdocs
-        cd %repo%
-        git pull
-    ) else (
-        echo Pilihan salah cok... masukkan "run" atau "update".
-        echo.
-        goto install
-    )
-) ELSE (
+IF NOT EXIST "c://xampp/htdocs/%repo%" (
     cd c://xampp/htdocs
     git clone http://github.com/abiisaleh/%repo%.git
     cd %repo%
     copy env .env
     copy php.ini c://xampp/php/php.ini
-    composer update & call start c://xampp/mysql_start.bat & install-db.bat & start php spark serve & start msedge http://localhost:8080
+    composer update & call start c://xampp/mysql_start.bat & install-db.bat & start php spark serve & start msedge http://localhost:8080 & EXIT
+)
+
+:install
+set /p choice="Mau apa cok? ( run / update): "
+
+IF "%choice%"=="run" (
+    cd c://xampp/htdocs
+    cd %repo%
+    start c://xampp/mysql_start.bat & start php spark serve
+    start msedge http://localhost:8080
+    EXIT
+) ELSE IF "%choice%"=="update" (
+    cd c://xampp/htdocs
+    cd %repo%
+    git pull
+    EXIT
+) ELSE (
+    echo Pilihan salah cok... masukkan "run" atau "update".
+    echo.
+    goto install
 )
